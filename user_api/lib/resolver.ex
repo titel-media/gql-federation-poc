@@ -13,7 +13,7 @@ defmodule UserApi.Resolver do
 
   def execute(%{type: :user}), do: handle_value("User")
 
-  def execute(_ctx, _obj, "user", %{"id" => id}) do
+  def execute(_ctx, _obj, "fetchUserById", %{"id" => id}) do
     get_user(id)
     |> handle_value
   end

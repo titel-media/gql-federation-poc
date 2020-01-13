@@ -12,7 +12,7 @@ schema {
 type Query {
   _service: _Service
   _entities: _Entity
-  user(id: ID!): User
+  fetchUserById(id: ID!): User
 }
 
 type User {
