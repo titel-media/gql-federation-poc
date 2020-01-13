@@ -12,6 +12,18 @@ defmodule UserApi.Resolver do
       "email" => "karl@highsnobiety.com",
       "id" => 3,
     },
+    4 => %{
+      "email" => "donatella@highsnobiety.com",
+      "id" => 4,
+    },
+    5 => %{
+      "email" => "sylvia@highsnobiety.com",
+      "id" => 5,
+    },
+    6 => %{
+      "email" => "joan@highsnobiety.com",
+      "id" => 6,
+    },
   }
 
   def execute(%{type: :user}), do: handle_value("User")
