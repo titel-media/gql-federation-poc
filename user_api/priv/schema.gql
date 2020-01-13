@@ -1,0 +1,25 @@
+#union _Entity = User | Product
+union _Entity = User
+
+scalar _Any
+
+scalar _FieldSet
+
+schema {
+  query: Query
+}
+
+type Query {
+  _service: _Service
+  _entities: _Entity
+  user(id: ID!): User
+}
+
+type User {
+  id: ID!
+  email: String
+}
+
+type _Service {
+  sdl: String!
+}
