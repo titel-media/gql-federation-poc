@@ -1,21 +1,15 @@
 # ProductService
 
-**TODO: Add description**
+Provides product data
 
-## Installation
+## Run
 
-If [available in Hex](https://hex.pm/docs/publish), the package can be installed
-by adding `product_api` to your list of dependencies in `mix.exs`:
+### Install Dependencies
+`mix deps.get`
 
-```elixir
-def deps do
-  [
-    {:product_api, "~> 0.1.0"}
-  ]
-end
-```
+### Start Server
+`iex -S mix`
+Will run on `http://localhost:3010`
 
-Documentation can be generated with [ExDoc](https://github.com/elixir-lang/ex_doc)
-and published on [HexDocs](https://hexdocs.pm). Once published, the docs can
-be found at [https://hexdocs.pm/product_api](https://hexdocs.pm/product_api).
+use: `curl http://localhost:3010/_ping` to check
 
