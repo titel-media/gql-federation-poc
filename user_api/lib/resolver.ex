@@ -2,12 +2,15 @@ defmodule UserApi.Resolver do
   @users %{
     1 => %{
       "email" => "virgil@highsnobiety.com",
+      "id" => 1,
     },
     2 => %{
       "email" => "kanye@highsnobiety.com",
+      "id" => 2,
     },
     3 => %{
       "email" => "karl@highsnobiety.com",
+      "id" => 3,
     },
   }
 
@@ -15,6 +18,15 @@ defmodule UserApi.Resolver do
 
   def execute(_ctx, _obj, "fetchUserById", %{"id" => id}) do
     get_user(id)
+    |> handle_value
+  end
+
+  def execute(_ctx, _obj, "_service", _args) do
+    schema = File.open!("priv/schema.gql", [:read, :utf8], &IO.read(&1, :all))
+             |> String.split("\n")
+             |> Enum.reject(fn line -> String.match?(line, ~r/#federation/) end)
+             |> Enum.join("\n")
+    %{data: %{"sdl" => schema}}
     |> handle_value
   end
 

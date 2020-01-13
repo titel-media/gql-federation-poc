@@ -26,7 +26,7 @@ defmodule ProductApi.Resolver do
     6 => [1,3],
   }
 
-  def execute(%{type: :user}), do: handle_value("User")
+  def execute(%{"__typename" => type}), do: handle_value(type)
   def execute(%{type: :product}), do: handle_value("Product")
 
   def execute(_ctx, _obj, "product", %{"id" => id}) do
@@ -34,10 +34,23 @@ defmodule ProductApi.Resolver do
     |> handle_value
   end
 
-  def execute(_ctx, %{data: data}, "products", _args) do
-    id = 1
-    Map.get(@user_products, id, [])
+  def execute(_ctx, %{"id" => id}, "products", args) do
+    Map.get(@user_products, String.to_integer(id), [])
     |> Enum.map(&get_product/1)
+    |> handle_value
+  end
+  
+  def execute(_ctx, _obj, "_entities", %{"representations" => r}) do
+    IO.inspect r
+    handle_value(r)
+  end
+
+  def execute(_ctx, _obj, "_service", _args) do
+    schema = File.open!("priv/schema.gql", [:read, :utf8], &IO.read(&1, :all))
+             |> String.split("\n")
+             |> Enum.reject(fn line -> String.match?(line, ~r/#federation/) end)
+             |> Enum.join("\n")
+    %{data: %{"sdl" => schema}}
     |> handle_value
   end
 
@@ -45,7 +58,7 @@ defmodule ProductApi.Resolver do
     Map.get(data, field, :null)
     |> handle_value
   end
-
+  
   def execute(_ctx, _obj, _field, _args) do
     handle_value(:null)
   end
@@ -53,7 +66,14 @@ defmodule ProductApi.Resolver do
   def input(_, value), do: handle_value(value)
   def output(_, value), do: handle_value(value)
 
+  defp get_product(id) when is_binary id do
+    id
+    |> String.to_integer
+    |> get_product
+  end
+
   defp get_product(id) do
+    IO.puts("Fetching product: #{id}")
     case Map.get(@products, id) do
       nil -> :null
       p -> %{type: :product, data: p}

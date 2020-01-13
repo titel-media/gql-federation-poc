@@ -13,6 +13,7 @@ defmodule ProductApi.Graphql.Query do
   end
 
   def run(statement, options \\ []) do
+    IO.puts "Received query: \n#{statement}"
     operation_name = Keyword.get(options, :op_name) || :undefined
     vars = Keyword.get(options, :vars) || %{}
 

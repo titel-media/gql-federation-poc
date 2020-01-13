@@ -1,32 +1,33 @@
+union _Entity = User | Product #federation
 
-#union _Entity = User | Product
-union _Entity = Product
+scalar _Any #federation
 
-scalar _Any
-
-scalar _FieldSet
+scalar _FieldSet #federation
 
 schema {
   query: Query
 }
 
-type Query {
-  _service: _Service
-  _entities: _Entity
+type Query @extends {
+  _entities(representations: [_Any!]!): [_Entity] #federation
+  # Note: this query should *not* return federation specific fields
+  #(see resolver)
+  _service: _Service! #federation
   product(id: ID!): Product
 }
 
 type User @key(fields: "id") @extends {
+  id: ID! @external
   products: [Product] @requires(fields: "id")
 }
 
-type Product {
+type Product @key(fields: "id") {
   id: ID!
   name: String
   brand: String
   priceUSD: Int
 }
 
-type _Service {
-  sdl: String!
-}
+type _Service { #federation
+  sdl: String! #federation
+} #federation
