@@ -33,6 +33,12 @@ defmodule UserApi.Resolver do
     |> handle_value
   end
 
+  def execute(_ctx, _obj, "fetchUsers", %{"ids" => ids}) do
+    ids
+    |> Enum.map(&get_user/1)
+    |> handle_value
+  end
+
   def execute(_ctx, _obj, "_service", _args) do
     schema = File.open!("priv/schema.gql", [:read, :utf8], &IO.read(&1, :all))
              |> String.split("\n")

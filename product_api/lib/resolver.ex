@@ -35,13 +35,14 @@ defmodule ProductApi.Resolver do
   end
 
   def execute(_ctx, %{"id" => id}, "products", args) do
+    IO.puts("Fetching products for user: #{id}")
     Map.get(@user_products, String.to_integer(id), [])
     |> Enum.map(&get_product/1)
     |> handle_value
   end
-  
+
   def execute(_ctx, _obj, "_entities", %{"representations" => r}) do
-    IO.inspect r
+    #    IO.inspect r
     handle_value(r)
   end
 
@@ -58,7 +59,7 @@ defmodule ProductApi.Resolver do
     Map.get(data, field, :null)
     |> handle_value
   end
-  
+
   def execute(_ctx, _obj, _field, _args) do
     handle_value(:null)
   end
@@ -73,7 +74,6 @@ defmodule ProductApi.Resolver do
   end
 
   defp get_product(id) do
-    IO.puts("Fetching product: #{id}")
     case Map.get(@products, id) do
       nil -> :null
       p -> %{type: :product, data: p}

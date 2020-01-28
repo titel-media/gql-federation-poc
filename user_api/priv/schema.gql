@@ -12,6 +12,7 @@ type Query @extends {
   _service: _Service #federation
   #  _entities: _Entity  #federation
   fetchUserById(id: ID!): User
+  fetchUsers(ids: [ID]!): [User]
 }
 
 type User @key(fields: "id") {
