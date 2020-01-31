@@ -13,11 +13,19 @@ type Query @extends {
   #  _entities: _Entity  #federation
   fetchUserById(id: ID!): User
   fetchUsers(ids: [ID]!): [User]
+  fetchUserGroup(name: String!): UserGroup
 }
 
 type User @key(fields: "id") {
   id: ID!
   email: String
+}
+
+type UserGroup {
+  name: String
+  founder: User
+  admin: User
+  members: [User]
 }
 
 type _Service { #federation

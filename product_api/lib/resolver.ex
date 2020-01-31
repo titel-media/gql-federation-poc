@@ -34,7 +34,7 @@ defmodule ProductApi.Resolver do
     |> handle_value
   end
 
-  def execute(_ctx, %{"id" => id}, "products", args) do
+  def execute(_ctx, %{"id" => id}, "products", _args) do
     IO.puts("Fetching products for user: #{id}")
     Map.get(@user_products, String.to_integer(id), [])
     |> Enum.map(&get_product/1)
@@ -42,7 +42,11 @@ defmodule ProductApi.Resolver do
   end
 
   def execute(_ctx, _obj, "_entities", %{"representations" => r}) do
-    #    IO.inspect r
+    # Here we would do any lookups of the given entities, based on the
+    # defined key fields present in the objects
+    # in this case we have the User with an id, and no additonal
+    # hydration is required
+    IO.inspect r
     handle_value(r)
   end
 

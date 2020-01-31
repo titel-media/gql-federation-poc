@@ -26,10 +26,37 @@ defmodule UserApi.Resolver do
     },
   }
 
+  @groups %{
+    "groupA" => %{
+      "name" => "groupA",
+      "founder" => 1,
+      "admin" => 2,
+      "members" => [3,4]
+    },
+    "groupB" => %{
+      "name" => "groupB",
+      "founder" => 5,
+      "admin" => 6,
+      "members" => [1,2]
+    },
+    "groupC" => %{
+      "name" => "groupC",
+      "founder" => 3,
+      "admin" => 1,
+      "members" => [6,2,5,4]
+    },
+  }
+
+
   def execute(%{type: :user}), do: handle_value("User")
 
   def execute(_ctx, _obj, "fetchUserById", %{"id" => id}) do
     get_user(id)
+    |> handle_value
+  end
+
+  def execute(_ctx, _obj, "fetchUserGroup", %{"name" => name}) do
+    Map.get(@groups, name, :null)
     |> handle_value
   end
 
@@ -45,6 +72,19 @@ defmodule UserApi.Resolver do
              |> Enum.reject(fn line -> String.match?(line, ~r/#federation/) end)
              |> Enum.join("\n")
     %{data: %{"sdl" => schema}}
+    |> handle_value
+  end
+
+  def execute(%{object_type: "UserGroup"}, obj, field, _args)
+  when field in ~w[founder admin] do
+    Map.get(obj, field)
+    |> get_user()
+    |> handle_value
+  end
+
+  def execute(%{object_type: "UserGroup"}, obj, "members", _args) do
+    Map.get(obj, "members")
+    |> Enum.map(&get_user/1)
     |> handle_value
   end
 
