@@ -33,6 +33,7 @@ defmodule UserApi.MixProject do
       {:plug_cowboy, "~> 2.0"},
       # cowboy is our web server layer
       {:cowboy, "~> 2.5"},
+      {:faker, "~> 0.13"}
     ]
   end
 end

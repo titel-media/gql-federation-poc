@@ -19,6 +19,7 @@ type Query @extends {
 type User @key(fields: "id") {
   id: ID!
   email: String
+  gallery: [ImageIdentical]
 }
 
 type UserGroup {
@@ -31,3 +32,18 @@ type UserGroup {
 type _Service { #federation
   sdl: String!  #federation
 }               #federation
+
+type ImageIdentical {
+  url: String
+  altText: String
+}
+
+type ImageWithExtends {
+  url: String
+  altText: String
+}
+
+type ImageDelegated {
+  url: String
+  altText: String
+}

@@ -26,8 +26,23 @@ type Product @key(fields: "id") {
   name: String
   brand: String
   priceUSD: Int
+  image: ImageIdentical
 }
 
 type _Service { #federation
   sdl: String! #federation
 } #federation
+
+type ImageIdentical {
+  url: String
+  altText: String
+}
+
+type ImageWithExtends {
+  url: String
+  altText: String
+}
+
+type ImageDelegated @extends {
+  id: ID!
+}

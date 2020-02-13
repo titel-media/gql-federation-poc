@@ -100,11 +100,39 @@ defmodule UserApi.Resolver do
   def input(_, value), do: handle_value(value)
   def output(_, value), do: handle_value(value)
 
-  defp get_user(id) do
+  defp get_user(id) when id <= 6 do
     case Map.get(@users, id) do
       nil -> :null
       p -> %{type: :user, data: p}
     end
+  end
+
+  defp get_user(id) do
+    seed(id)
+    %{
+      type: :user,
+      data: %{
+        "id" => id,
+        "email" => Faker.Internet.email(),
+        "gallery" => 0..:rand.uniform(3) |> Enum.map(fn _ -> get_image(:rand.uniform(100)) end)
+      }
+    }
+  end
+
+  defp get_image(id) do
+    seed(id)
+    %{
+      type: :image,
+      data: %{
+        "url" => Faker.Internet.image_url(),
+        "altText" => Faker.Lorem.paragraph(1),
+      }
+    }
+  end
+
+  defp seed(seed) do
+    :random.seed(seed)
+    :rand.seed(:exrop, {seed,1,1})
   end
 
   defp handle_value(value) when is_list value do
