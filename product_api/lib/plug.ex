@@ -26,7 +26,7 @@ defmodule ProductApi.Graphql.Plug do
     headers = conn.req_headers |> Map.new
     user_id = Map.get(headers, "user-id")
 
-    variables = Map.put(variables, "user-id", user_id)
+    variables = Map.put(variables || %{}, "user-id", user_id)
     case ProductApi.Graphql.Query.run(query, op_name: operation, vars: variables) do
       {:ok, %{errors: [%{message: "invalid_token"} | _]} = e} ->
         json_response(conn, 401, %{error: e})

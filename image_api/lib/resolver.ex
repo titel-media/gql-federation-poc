@@ -2,6 +2,7 @@ defmodule ImageApi.Resolver do
   def execute(_), do: handle_value("ImageDelegated")
 
   def execute(_ctx, _obj, "_entities", %{"representations" => r}) do
+    IO.inspect r
     handle_value(r)
   end
   

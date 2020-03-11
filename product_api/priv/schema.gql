@@ -1,5 +1,7 @@
 union _Entity = User | Product #federation
 
+union ProductImageAsset = ImageDelegated | ImageInternal
+
 scalar _Any #federation
 
 scalar _FieldSet #federation
@@ -27,15 +29,25 @@ type Product @key(fields: "id") {
   name: String
   brand: String
   priceUSD: Int
-  image: ImageIdentical
-  images: [ImageDelegated]
+  image: ImageInternal
+  images: [ProductImage]
 }
 
 type _Service { #federation
   sdl: String! #federation
 } #federation
 
-type ImageIdentical {
+type ProductImage {
+  caption: String
+  asset: ProductImageAsset
+}
+
+interface ImageInterface @extends {
+  url: String @external
+  altText: String @external
+}
+
+type ImageInternal implements ImageInterface {
   url: String
   altText: String
 }

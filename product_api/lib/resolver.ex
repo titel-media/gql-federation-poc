@@ -28,6 +28,8 @@ defmodule ProductApi.Resolver do
 
   def execute(%{"__typename" => type}), do: handle_value(type)
   def execute(%{type: :product}), do: handle_value("Product")
+  def execute(%{type: :image_delegated}), do: handle_value("ImageDelegated")
+  def execute(%{type: :image_internal}), do: handle_value("ImageInternal")
 
   def execute(_ctx, _obj, "product", %{"id" => id}) do
     get_product(id)
@@ -91,8 +93,14 @@ defmodule ProductApi.Resolver do
     seed(id)
     1..:rand.uniform(10)
     |> Enum.map(fn _ ->
-      :rand.uniform(100)
-      |> get_image()
+      asset_id = :rand.uniform(100)
+      asset = get_image(asset_id)
+      %{
+        data: %{
+          "asset" => asset,
+          "caption" => Faker.Food.dish(),
+        }
+      }
     end)
     |> handle_value()
   end
@@ -161,12 +169,18 @@ defmodule ProductApi.Resolver do
 
   defp get_image(id) do
     seed(id)
+    type = case :rand.uniform(100) do
+      n when n <= 50 ->
+        :image_delegated
+      _ ->
+        :image_internal
+    end
     %{
-      type: :image,
+      type: type,
       data: %{
         "id" => id,
         "url" => Faker.Internet.image_url(),
-        "altText" => Faker.Lorem.paragraph(1),
+        "altText" => Faker.Food.description() |> String.split(",") |> List.first,
       }
     }
   end
