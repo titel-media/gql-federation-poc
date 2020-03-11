@@ -3,6 +3,19 @@ defmodule UserApi do
   require Logger
 
   def start_phase(:load_graphql_schema, _, []) do
+  
+    IO.puts """
+
+#     #                         #    ######  ### 
+#     #  ####  ###### #####    # #   #     #  #  
+#     # #      #      #    #  #   #  #     #  #  
+#     #  ####  #####  #    # #     # ######   #  
+#     #      # #      #####  ####### #        #  
+#     # #    # #      #   #  #     # #        #  
+ #####   ####  ###### #    # #     # #       ### 
+                                                 
+"""
+
     :ok = UserApi.Schema.load()
   end
 

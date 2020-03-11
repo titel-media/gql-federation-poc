@@ -3,6 +3,17 @@ defmodule ProductApi do
   require Logger
 
   def start_phase(:load_graphql_schema, _, []) do
+  IO.puts """
+
+######                                              #    ######  ### 
+#     # #####   ####  #####  #    #  ####  #####   # #   #     #  #  
+#     # #    # #    # #    # #    # #    #   #    #   #  #     #  #  
+######  #    # #    # #    # #    # #        #   #     # ######   #  
+#       #####  #    # #    # #    # #        #   ####### #        #  
+#       #   #  #    # #    # #    # #    #   #   #     # #        #  
+#       #    #  ####  #####   ####   ####    #   #     # #       ### 
+                                                                     
+"""
     :ok = ProductApi.Schema.load()
   end
 

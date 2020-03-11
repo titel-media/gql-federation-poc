@@ -1,0 +1,24 @@
+union _Entity = ImageDelegated #federation
+
+scalar _Any #federation
+
+scalar _FieldSet #federation
+
+schema {
+  query: Query
+}
+
+type Query @extends { #federation
+  _service: _Service #federation
+  _entities(representations: [_Any!]!): [_Entity] #federation
+} #federation
+
+type _Service { #federation
+  sdl: String!  #federation
+}               #federation
+
+type ImageDelegated @key(fields: "id") {
+  id: ID!
+  url: String
+  altText: String
+}

@@ -75,6 +75,16 @@ defmodule ProductApi.Resolver do
     |> handle_value()
   end
 
+  def execute(%{object_type: "Product"}, %{id: id}, "images", _args) do
+    seed(id)
+    1..:rand.uniform(10)
+    |> Enum.map(fn _ ->
+      :rand.uniform(100)
+      |> get_image()
+    end)
+    |> handle_value()
+  end
+
   def execute(_ctx, %{data: data}, field, _args) do
     Map.get(data, field, :null)
     |> handle_value
@@ -142,6 +152,7 @@ defmodule ProductApi.Resolver do
     %{
       type: :image,
       data: %{
+        "id" => id,
         "url" => Faker.Internet.image_url(),
         "altText" => Faker.Lorem.paragraph(1),
       }

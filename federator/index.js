@@ -7,6 +7,7 @@ const gateway = new ApolloGateway({
   serviceList: [
     { name: 'users', url: 'http://localhost:3020' },
     { name: 'products', url: 'http://localhost:3010' },
+    { name: 'images', url: 'http://localhost:3030' }
   ],
 });
 
