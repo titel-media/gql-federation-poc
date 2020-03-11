@@ -38,6 +38,18 @@ defmodule ProductApi.Resolver do
     handle_value(p)
   end
 
+  def execute(%{params: params}, obj, "getProducts", _args) do
+    case Map.get(params, "user-id") do
+      val when val in [nil, ""] ->
+        {:error, "no user id!"}
+      user_id ->
+        IO.puts("Fetching products for in-header user: #{user_id}")
+        product_ids_for_user(user_id)
+        |> Enum.map(&get_product/1)
+        |> handle_value
+    end
+  end
+
 
   def execute(_ctx, %{"id" => id}, "products", _args) do
     IO.puts("Fetching products for user: #{id}")
