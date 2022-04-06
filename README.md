@@ -92,3 +92,6 @@ You should see this response
 
 ## Read More:
 [Federation Specs](https://www.apollographql.com/docs/apollo-server/federation/federation-spec/#schema-modifications-glossary)
+
+## License
+Released under the [MIT License](./LICENSE).
